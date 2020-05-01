@@ -1,0 +1,20 @@
+header, footer {
+    background-color: rgb(236, 176, 10);
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+h1, h2 {
+    font-weight: 500;
+    text-decoration-line: underline;
+    font-family: 'Lobster', cursive;
+}
+
+body {
+    padding-left: 15px;
+
+}
+
+.recipe {
+    margin-bottom: 70px;
+}
