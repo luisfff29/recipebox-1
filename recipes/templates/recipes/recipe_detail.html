@@ -1,0 +1,19 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+    <h2>{{ recipe.title|title }}</h2>
+    <p>by <a href="{% url 'source_detail' pk=recipe.source.pk %}">{{recipe.source}}</a> </p>
+    <h3>Description</h3>
+    <p class="description">{{recipe.description|linebreaksbr}}</p>
+    <p>Prep Time: {{recipe.prep_time}}&emsp;Cook Time:{{recipe.cook_time}}
+    <h3>Ingredients</h3>
+    {{recipe_ingredients|unordered_list}}
+    <h3>Instructions</h3>
+    {{recipe.instructions|linebreaksbr}}
+    {% if recipe.serves %}
+        <p>Serves: {{recipe.serves}}</p>
+    {% endif %}
+    
+
+{% endblock %}
+
