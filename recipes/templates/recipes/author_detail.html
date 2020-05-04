@@ -5,6 +5,12 @@
     <h3>Bio</h3>
     {{author.about|linebreaksbr}}
     <h3>Recipes Contributed</h3>
-    {{recipes|unordered_list}}
+    <ul>
+    {% for recipe in recipes %}
+        <li>
+        <a href="{% url 'recipe_detail' pk=recipe.pk %}"><h3>{{ recipe }}</h3></a>
+        </li> 
+    {% endfor %}
+    </ul>
     <br>
 {% endblock%}
