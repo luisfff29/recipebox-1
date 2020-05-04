@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Source(models.Model):
+class Author(models.Model):
     name = models.CharField(max_length=50)
     about = models.TextField()
 
@@ -11,7 +11,7 @@ class Source(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=100)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     description = models.TextField()
     prep_time = models.CharField(max_length=20)
     cook_time = models.CharField(max_length=20)

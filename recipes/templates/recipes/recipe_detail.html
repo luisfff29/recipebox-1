@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>{{ recipe.title|title }}</h2>
-    <p>by <a href="{% url 'source_detail' pk=recipe.source.pk %}">{{recipe.source}}</a> </p>
+    <p>by <a href="{% url 'author_detail' pk=recipe.author.pk %}">{{recipe.author}}</a> </p>
     <h3>Description</h3>
     <p class="description">{{recipe.description|linebreaksbr}}</p>
     <p>Prep Time: {{recipe.prep_time}}&emsp;Cook Time:{{recipe.cook_time}}

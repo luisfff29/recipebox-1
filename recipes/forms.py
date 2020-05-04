@@ -1,10 +1,10 @@
 from django import forms
-from recipes.models import Source, Recipe
+from recipes.models import Author, Recipe
 
 
-class AddSourceForm(forms.ModelForm):
+class AddAuthorForm(forms.ModelForm):
     class Meta:
-        model = Source
+        model = Author
         fields = [
             'name',
             'about',
@@ -16,7 +16,7 @@ class AddRecipeForm(forms.ModelForm):
         model = Recipe
         fields = [
             'title',
-            'source',
+            'author',
             'description',
             'prep_time',
             'cook_time',

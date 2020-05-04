@@ -1,9 +1,9 @@
 {% extends 'recipes/base.html' %}
 
 {%block content%}
-    <h2>{{source.name}}</h2>
+    <h2>{{author.name}}</h2>
     <h3>About</h3>
-    {{source.about|linebreaksbr}}
+    {{author.about|linebreaksbr}}
     <h3>Recipes Contributed</h3>
     {{recipes|unordered_list}}
     <br>

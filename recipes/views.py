@@ -1,8 +1,8 @@
 from django.shortcuts import (
     render, get_object_or_404, reverse, HttpResponseRedirect)
-from recipes.models import Source, Recipe
+from recipes.models import Author, Recipe
 # from django.utils import forms
-from recipes.forms import AddSourceForm, AddRecipeForm
+from recipes.forms import AddAuthorForm, AddRecipeForm
 
 
 def index(request):
@@ -10,13 +10,13 @@ def index(request):
     return render(request, 'recipes/index.html', {'recipes': recipes, })
 
 
-def add_source(request):
+def add_author(request):
     html = "recipes/add_form.html"
     if request.method == "POST":
-        form = AddSourceForm(request.POST)
+        form = AddAuthorForm(request.POST)
         form.save()
         return HttpResponseRedirect(reverse('home'))
-    form = AddSourceForm()
+    form = AddAuthorForm()
     return render(request, html, {'form': form})
 
 
@@ -38,9 +38,9 @@ def recipe_detail(request, pk):
         'recipe_ingredients': recipe_ingredients})
 
 
-def source_detail(request, pk):
-    source = get_object_or_404(Source, pk=pk)
+def author_detail(request, pk):
+    author = get_object_or_404(Author, pk=pk)
     recipes = Recipe.objects.filter(
-        source=source).order_by('title')
-    return render(request, 'recipes/source_detail.html', {
-        'source': source, 'recipes': recipes})
+        author=author).order_by('title')
+    return render(request, 'recipes/author_detail.html', {
+        'author': author, 'recipes': recipes})
