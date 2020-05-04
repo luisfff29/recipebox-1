@@ -7,7 +7,7 @@ class AddAuthorForm(forms.ModelForm):
         model = Author
         fields = [
             'name',
-            'about',
+            'bio',
         ]
 
 
@@ -18,9 +18,6 @@ class AddRecipeForm(forms.ModelForm):
             'title',
             'author',
             'description',
-            'prep_time',
-            'cook_time',
-            'ingredients',
+            'time_required',
             'instructions',
-            'serves',
         ]

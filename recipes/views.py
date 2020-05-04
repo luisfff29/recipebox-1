@@ -32,10 +32,7 @@ def add_recipe(request):
 
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
-    recipe_ingredients = recipe.ingredients.split('\n')
-    return render(request, 'recipes/recipe_detail.html', {
-        'recipe': recipe,
-        'recipe_ingredients': recipe_ingredients})
+    return render(request, 'recipes/recipe_detail.html', {'recipe': recipe, })
 
 
 def author_detail(request, pk):
