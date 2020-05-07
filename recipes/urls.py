@@ -8,4 +8,5 @@ urlpatterns = [
     path('author/<int:pk>/', views.author_detail, name='author_detail'),
     path('addauthor/', views.add_author, name='add_author'),
     path('addrecipe/', views.add_recipe, name='add_recipe'),
+    path('login/', views.loginview, name='login'),
 ]

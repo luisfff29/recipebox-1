@@ -14,3 +14,7 @@ class AddRecipeForm(forms.Form):
     time_required = forms.CharField(max_length=20)
     instructions = forms.CharField(widget=forms.Textarea)
 
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput)
