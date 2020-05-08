@@ -14,9 +14,13 @@
                 <a href="{% url "home" %}" class="{% if request.resolver_match.url_name == "home" %}active{% endif %}">Home</a>
                 <a href="{% url "add_author" %}" class="{% if request.resolver_match.url_name == "add_author" %}active{% endif %}">Add Author</a>
                 <a href="{% url "add_recipe" %}" class="{% if request.resolver_match.url_name == "add_recipe" %}active{% endif %}">Add Recipe</a>
+                <a href="{% url "login" %}" class="{% if request.resolver_match.url_name == "login" %}active{% endif %}">Log In</a>
+                <a href="{% url 'logout' %}?next={% url 'home'%}"> Logout</a>
             </div>
         </header>
-
+        {% if user.is_authenticated %}
+        <p> Hello, {{user.username}} </p>
+        {%endif%}
             {% block content %}
             {% endblock %}
 

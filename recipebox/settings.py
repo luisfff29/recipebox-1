@@ -121,3 +121,6 @@ USE_TZ = True
 STATIC_URL = '/recipes/static/'
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '/login/'
