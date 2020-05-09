@@ -1,7 +1,10 @@
 from django.shortcuts import (
     render, get_object_or_404, reverse, HttpResponseRedirect)
 from recipes.models import Author, Recipe
-from recipes.forms import AddAuthorForm, AddRecipeForm, LoginForm
+from recipes.forms import (AddAuthorForm,
+                           StaffAddRecipeForm,
+                           UserAddRecipeForm,
+                           LoginForm)
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -40,20 +43,40 @@ def add_author(request):
 @login_required
 def add_recipe(request):
     html = "recipes/add_form.html"
-    if request.method == "POST":
-        form = AddRecipeForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            Recipe.objects.create(
-                title=data['title'],
-                author=data['author'],
-                description=data['description'],
-                time_required=data['time_required'],
-                instructions=data['instructions'],
-            )
-        return HttpResponseRedirect(reverse('home'))
-    form = AddRecipeForm()
-    return render(request, html, {'form': form})
+    if request.user.is_staff:
+        if request.method == "POST":
+            form = StaffAddRecipeForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                Recipe.objects.create(
+                    title=data['title'],
+                    author=data['author'],
+                    description=data['description'],
+                    time_required=data['time_required'],
+                    instructions=data['instructions'],
+                )
+            return HttpResponseRedirect(reverse('home'))
+        form = StaffAddRecipeForm()
+        return render(request, html, {
+            'form': form,
+        })
+    else:
+        if request.method == "POST":
+            form = UserAddRecipeForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                Recipe.objects.create(
+                    title=data['title'],
+                    author=Author.objects.get(name=request.user.author),
+                    description=data['description'],
+                    time_required=data['time_required'],
+                    instructions=data['instructions'],
+                )
+            return HttpResponseRedirect(reverse('home'))
+        form = UserAddRecipeForm()
+        return render(request, html, {
+            'form': form,
+        })
 
 
 def recipe_detail(request, pk):
