@@ -4,6 +4,7 @@ from recipes.models import Author, Recipe
 from recipes.forms import AddAuthorForm, AddRecipeForm, LoginForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 
 
@@ -12,26 +13,28 @@ def index(request):
     return render(request, 'recipes/index.html', {'recipes': recipes, })
 
 
-@login_required
+@staff_member_required(login_url='/login/?next=/addauthor/')
 def add_author(request):
     html = "recipes/add_form.html"
-
+    message_before = """Create a new user/author below.
+      Each user account is associates with exactly one author name."""
     if request.method == "POST":
         form = AddAuthorForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            if data['password'] == data['confirm_password']:
-                User.objects.create_user(
-                    username=data['username'],
-                    password=data['password']
-                )
-                Author.objects.create(
-                    name=data['name'],
-                    bio=data['bio'],
-                )
+            User.objects.create_user(
+                username=data['username'],
+                password=data['password']
+            )
+            Author.objects.create(
+                name=data['author_name'],
+                bio=data['bio'],
+                user=User.objects.get(username=data['username'])
+            )
         return HttpResponseRedirect(reverse('home'))
     form = AddAuthorForm()
-    return render(request, html, {'form': form})
+    return render(request, html, {
+        'form': form, 'message_before': message_before})
 
 
 @login_required
@@ -63,11 +66,11 @@ def author_detail(request, pk):
     recipes = Recipe.objects.filter(
         author=author).order_by('title')
     return render(request, 'recipes/author_detail.html', {
-        'author': author, 'recipes': recipes})
+        'author': author, 'recipes': recipes, })
 
 
 def loginview(request):
-    alt_message = ""
+    message_after = ""
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -80,20 +83,14 @@ def loginview(request):
                     request.GET.get('next', reverse('home'))
                 )
             else:
-                alt_message = """Credentials supplied do not match our records.
+                message_after = """Credentials supplied do not match our records.
                     Please try again."""
     form = LoginForm()
     return render(request, 'recipes/add_form.html',
-                  {'form': form, 'alt_message': alt_message})
+                  {'form': form, 'message_after': message_after})
 
 
-# @login_required
+@login_required()
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(request.GET.get('next', reverse('home')))
-
-
-def registerview(request):
-    alt_message = """If you already have an account
-        <a href='/login' target='blank'><strong>login</strong></a> instead."""
-    pass

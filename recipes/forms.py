@@ -3,13 +3,11 @@ from recipes.models import Author
 
 
 class AddAuthorForm(forms.Form):
-    name = forms.CharField(max_length=50)
-    bio = forms.CharField(widget=forms.Textarea)
     username = forms.CharField(max_length=50)
     password = forms.CharField(
         max_length=30, widget=forms.PasswordInput)
-    confirm_password = forms.CharField(
-        max_length=30, widget=forms.PasswordInput)
+    author_name = forms.CharField(max_length=50)
+    bio = forms.CharField(widget=forms.Textarea)
 
 
 class AddRecipeForm(forms.Form):
