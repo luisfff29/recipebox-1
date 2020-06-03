@@ -3,6 +3,17 @@
 {% block content %}
     <h2>{{ recipe.title|title }}</h2>
     <a href="{% url 'update_recipe' recipe.pk %}"><span class="material-icons">edit</span></a>
+    {% if user.is_authenticated %}      
+        {% if favorite %}
+            <a href="{% url 'unfavorite_recipe' recipe.pk %}">
+                <span class="material-icons">favorite</span>
+            </a>
+        {% else %}
+            <a href="{% url 'favorite_recipe' recipe.pk %}">
+                <span class="material-icons">favorite_border</span>
+            </a>
+        {% endif %}
+    {% endif %}
     <p>by <a href="{% url 'author_detail' pk=recipe.author.pk %}">{{recipe.author}}</a> </p>
     <h3>Description</h3>
     <p class="description">{{recipe.description|linebreaksbr}}</p>
