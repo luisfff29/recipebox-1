@@ -131,9 +131,18 @@ def update_recipe(request, pk):
 
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
-    return render(request, 'recipes/recipe_detail.html', {'recipe': recipe, })
+    favorite = False
+    if hasattr(request.user, 'author'):
+        if request.user.author in recipe.favorites.all():
+            favorite = True
+
+    return render(request, 'recipes/recipe_detail.html', {
+        'recipe': recipe,
+        'favorite': favorite,
+    })
 
 
+@login_required
 def favorite_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     try:
@@ -145,6 +154,7 @@ def favorite_recipe(request, pk):
     return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
 
 
+@login_required
 def unfavorite_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     try:
