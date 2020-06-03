@@ -9,6 +9,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 
 
 def index(request):
@@ -104,7 +105,7 @@ def update_recipe(request, pk):
             'instructions': recipe.instructions
         })
         return render(request, html, {'form': form})
-    else:
+    elif request.user.author == recipe.author:
         if request.method == "POST":
             form = UserAddRecipeForm(request.POST)
             if form.is_valid():
@@ -123,6 +124,9 @@ def update_recipe(request, pk):
             'instructions': recipe.instructions
         })
         return render(request, html, {'form': form})
+    else:
+        raise PermissionDenied
+        # You don't currently have permission to update or edit this recipe.
 
 
 def recipe_detail(request, pk):
