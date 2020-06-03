@@ -79,6 +79,52 @@ def add_recipe(request):
         })
 
 
+@login_required
+def update_recipe(request, pk):
+    html = "recipes/add_form.html"
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.user.is_staff:
+        if request.method == "POST":
+            form = StaffAddRecipeForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                recipe.title = data['title']
+                recipe.author = data['author']
+                recipe.description = data['description']
+                recipe.time_required = data['time_required']
+                recipe.instructions = data['instructions']
+            recipe.save()
+            return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
+
+        form = StaffAddRecipeForm(initial={
+            'title': recipe.title,
+            'author': recipe.author,
+            'description': recipe.description,
+            'time_required': recipe.time_required,
+            'instructions': recipe.instructions
+        })
+        return render(request, html, {'form': form})
+    else:
+        if request.method == "POST":
+            form = UserAddRecipeForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                recipe.title = data['title']
+                recipe.description = data['description']
+                recipe.time_required = data['time_required']
+                recipe.instructions = data['instructions']
+            recipe.save()
+            return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
+
+        form = UserAddRecipeForm(initial={
+            'title': recipe.title,
+            'description': recipe.description,
+            'time_required': recipe.time_required,
+            'instructions': recipe.instructions
+        })
+        return render(request, html, {'form': form})
+
+
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     return render(request, 'recipes/recipe_detail.html', {'recipe': recipe, })
