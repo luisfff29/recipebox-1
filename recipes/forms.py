@@ -28,3 +28,18 @@ class UserAddRecipeForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=50)
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class UpdateRecipeStaffForm(forms.Form):
+    title = forms.CharField(max_length=100)
+    author = forms.ModelChoiceField(queryset=Author.objects.all())
+    description = forms.CharField(widget=forms.Textarea)
+    time_required = forms.CharField(max_length=20)
+    instructions = forms.CharField(widget=forms.Textarea)
+
+
+class UpdateRecipeUserForm(forms.Form):
+    title = forms.CharField(max_length=100)
+    description = forms.CharField(widget=forms.Textarea)
+    time_required = forms.CharField(max_length=20)
+    instructions = forms.CharField(widget=forms.Textarea)

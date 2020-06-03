@@ -4,7 +4,9 @@ from recipes.models import Author, Recipe
 from recipes.forms import (AddAuthorForm,
                            StaffAddRecipeForm,
                            UserAddRecipeForm,
-                           LoginForm)
+                           LoginForm,
+                           UpdateRecipeStaffForm,
+                           UpdateRecipeUserForm)
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -86,7 +88,7 @@ def update_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     if request.user.is_staff:
         if request.method == "POST":
-            form = StaffAddRecipeForm(request.POST)
+            form = UpdateRecipeStaffForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
                 recipe.title = data['title']
@@ -97,7 +99,7 @@ def update_recipe(request, pk):
             recipe.save()
             return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
 
-        form = StaffAddRecipeForm(initial={
+        form = UpdateRecipeStaffForm(initial={
             'title': recipe.title,
             'author': recipe.author,
             'description': recipe.description,
@@ -107,7 +109,7 @@ def update_recipe(request, pk):
         return render(request, html, {'form': form})
     elif request.user.author == recipe.author:
         if request.method == "POST":
-            form = UserAddRecipeForm(request.POST)
+            form = UpdateRecipeUserForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
                 recipe.title = data['title']
@@ -117,7 +119,7 @@ def update_recipe(request, pk):
             recipe.save()
             return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
 
-        form = UserAddRecipeForm(initial={
+        form = UpdateRecipeUserForm(initial={
             'title': recipe.title,
             'description': recipe.description,
             'time_required': recipe.time_required,
