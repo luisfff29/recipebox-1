@@ -12,5 +12,16 @@
         </li> 
     {% endfor %}
     </ul>
+
+    <h3>Favorite Recipes</h3>
+    <ul>
+    {% for fav in fav_recipes %}
+        <li>
+        <a href="{% url 'recipe_detail' pk=fav.pk %}"><h3>{{ fav }}</h3></a>
+        </li>
+    {% empty %}
+    <i>There are no favorite recipes for this author</i>
+    {% endfor %}
+    </ul>
     <br>
 {% endblock%}

@@ -170,8 +170,12 @@ def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk)
     recipes = Recipe.objects.filter(
         author=author).order_by('title')
+    fav_recipes = Recipe.objects.filter(favorites=author)
     return render(request, 'recipes/author_detail.html', {
-        'author': author, 'recipes': recipes, })
+        'author': author,
+        'recipes': recipes,
+        'fav_recipes': fav_recipes,
+    })
 
 
 def loginview(request):
