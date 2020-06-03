@@ -134,6 +134,21 @@ def recipe_detail(request, pk):
     return render(request, 'recipes/recipe_detail.html', {'recipe': recipe, })
 
 
+def favorite_recipe(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    try:
+        author = Author.objects.get(user=request.user)
+    except Exception as e:
+        print(e)
+        return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
+    recipe.favorites.add(author)
+    return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
+
+
+def unfavorite_recipe(request, pk):
+    pass
+
+
 def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk)
     recipes = Recipe.objects.filter(
