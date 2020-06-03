@@ -146,7 +146,14 @@ def favorite_recipe(request, pk):
 
 
 def unfavorite_recipe(request, pk):
-    pass
+    recipe = get_object_or_404(Recipe, pk=pk)
+    try:
+        author = Author.objects.get(user=request.user)
+    except Exception as e:
+        print(e)
+        return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
+    recipe.favorites.remove(author)
+    return HttpResponseRedirect(reverse('recipe_detail', args=(pk, )))
 
 
 def author_detail(request, pk):
